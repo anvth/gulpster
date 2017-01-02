@@ -10,3 +10,11 @@ class Event(object):
                 self.payload = payload
                 self.identifier = str(uuid.uuid1())
                 self.occurrenceTime = datetime.now(tzlocal())
+
+	def asDict(self):
+		return {
+			'eventType': self.eventType,
+			'identifier': self.identifier,
+			'occurrenceTime': self.occurrenceTime,
+			'payload': self.payload
+			}

@@ -1,4 +1,5 @@
 from event import Event
+from utils import deserialize
 import pika, os, logging, time
 
 logging.basicConfig()
@@ -16,10 +17,9 @@ class Consumer(object):
         def notify_listener(self, evt):
                 if self._event_listener:
                         try:
-                                #evt = Event("com.dreamworks.test", {})
-                                self._event_listener.handle_event(evt)
+                                self._event_listener.handle_event(deserialize(evt))
                         except Exception as e:
-                                print "Exception Caught"
+                                print e
 
 	def connect(self):
 		url = 'amqp://fuxghddt:yyCgDMbcfLI_7fv5lf9GHoPpl6w6_QtU@buck.rmq.cloudamqp.com/fuxghddt'
@@ -34,7 +34,7 @@ class Consumer(object):
 
 		#set up subscription on the queue
 		channel.basic_consume(callback,
-  			queue='pdfprocess',
+  			queue='test',
   			no_ack=True)
 
 		# start consuming (blocks)

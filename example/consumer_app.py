@@ -1,6 +1,6 @@
-from consumer import Consumer
-from agentbase import BaseEventHandler, BaseConsumerAgent
-from agentbase import event
+from gulpster.consumer import Consumer
+from gulpster.agentbase import BaseEventHandler, BaseConsumerAgent
+from gulpster.agentbase import event
 
 
 class App(object):
@@ -22,8 +22,15 @@ class App(object):
 
 
 class SimpleEventHandler(BaseEventHandler):
-    @event(None)
-    def print_event(self, evt):
+    @event("com.home.test")
+    def print_test_event(self, evt):
+        print "Print test event"
+        if evt is not None:
+            print('=== {}'.format(evt))
+
+    @event("com.home.hello")
+    def print_hello_event(self, evt):
+        print "Print hello event"
         if evt is not None:
             print('=== {}'.format(evt))
 

@@ -9,13 +9,14 @@ class event(object):
         def __call__(self, func):
                 @wraps(func)
                 def wrap(inst, evt, *args, **kwargs):
-                        if self.event is None:
+                        if self.event is not None:
                                 func(inst, evt, *args, **kwargs)
                         else:
                                 return None
 
 
                 wrap._event = True
+                wrap.event_name = self.event
                 return wrap
 
 
@@ -27,8 +28,9 @@ class EventMeta(type):
 
                 for member in dict.values():
                         if hasattr(member, '_event'):
-                                cls._registry['handlers'].append(member)
-		super(EventMeta, cls).__init__(name, bases, dict)
+                                cls._registry['handlers'].append((member.event_name, [dict[member.func_name]]))
+
+                super(EventMeta, cls).__init__(name, bases, dict)
 
 
 class BaseEventHandler(object):
@@ -37,7 +39,7 @@ class BaseEventHandler(object):
 
 
         def handle_event(self, evt, *args, **kwargs):
-                for handler in self._registry['handlers']:
+                for handler in dict(self._registry['handlers'])[evt['eventType']]:
                         handler(self, evt, *args, **kwargs)
 
 
