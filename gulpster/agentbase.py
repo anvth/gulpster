@@ -28,7 +28,12 @@ class EventMeta(type):
 
                 for member in dict.values():
                         if hasattr(member, '_event'):
-                                cls._registry['handlers'].append((member.event_name, [dict[member.func_name]]))
+                                try:
+                                        handler_index = [handler[0] for handler in cls._registry['handlers']].index(member.event_name)
+                                except ValueError:
+                                        cls._registry['handlers'].append((member.event_name, [dict[member.func_name]]))
+                                else:
+                                        cls._registry['handlers'][handler_index][1].append(dict[member.func_name])
 
                 super(EventMeta, cls).__init__(name, bases, dict)
 
