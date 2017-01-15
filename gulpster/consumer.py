@@ -1,5 +1,6 @@
 from event import Event
 from utils import deserialize
+from config import read_config_file
 import pika, os, logging, time
 
 logging.basicConfig()
@@ -8,6 +9,7 @@ logging.basicConfig()
 class Consumer(object):
         def __init__(self):
                 self._event_listener = None
+                self.config = read_config_file()
 
 
         def set_event_listener(self, listener):
@@ -21,8 +23,13 @@ class Consumer(object):
                         except Exception as e:
                                 print e
 
+        
 	def connect(self):
-		url = 'amqp://fuxghddt:yyCgDMbcfLI_7fv5lf9GHoPpl6w6_QtU@buck.rmq.cloudamqp.com/fuxghddt'
+		url = 'amqp://' + self.config['username'] + \
+			  ':' + self.config['password'] + \
+			  '@' + self.config['host'] + \
+			  self.config['virtual_host']
+		queue = self.config['queue']
 		params = pika.URLParameters(url)
 		params.socket_timeout = 5
 		connection = pika.BlockingConnection(params) # Connect to CloudAMQP
@@ -34,7 +41,7 @@ class Consumer(object):
 
 		#set up subscription on the queue
 		channel.basic_consume(callback,
-  			queue='test',
+  			queue=queue,
   			no_ack=True)
 
 		# start consuming (blocks)
