@@ -1,1 +1,1 @@
-# rabbitMQ_tuts
+[WIP...] Python Event Orchestrator Package
