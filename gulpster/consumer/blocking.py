@@ -1,6 +1,6 @@
-from event import Event
-from utils import deserialize
-from config import read_config_file
+from gulpster.event import Event
+from gulpster.utils import deserialize
+from gulpster.config import read_config_file
 import pika, os, logging, time
 
 logging.basicConfig()

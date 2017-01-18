@@ -1,4 +1,4 @@
-from gulpster.consumer import Consumer
+from gulpster.consumer.blocking import Consumer
 from gulpster.agentbase import BaseEventHandler, BaseConsumerAgent
 from gulpster.agentbase import event
 
