@@ -5,13 +5,15 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
+    LONG_DESCRIPTION = f.read()
+
+REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(
     name='gulpster',
     version='0.1',
-    description='A event processing agent',
-    long_description=long_description,
+    description='An event orchestration package',
+    long_description=LONG_DESCRIPTION,
     url='https://github.com/anvth/gulpster',
     author='Anvith Shivakumara',
     author_email='s.anvith@gmail.com',
@@ -25,4 +27,5 @@ setup(
     ],
     keywords='Micro services',
     packages=find_packages(),
+    install_requires=REQUIREMENTS,
 )
