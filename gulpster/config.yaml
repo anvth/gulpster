@@ -5,3 +5,6 @@ rabbitmq:
   port: 5672
   virtual_host: /fuxghddt
   queue: test
+  exchange: message
+  exchange_type: topic
+  routing_key: example.test

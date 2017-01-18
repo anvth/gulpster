@@ -62,4 +62,4 @@ class BaseConsumerAgent(object):
 
         def run(self):
                 self.consumer.set_event_listener(self)
-                self.consumer.connect()
+                self.consumer.run()
