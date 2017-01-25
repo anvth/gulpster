@@ -9,7 +9,7 @@ from base import BaseConsumer
 
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
               '-35s %(lineno) -5d: %(message)s')
-logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=LOG_FORMAT)
+# logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=LOG_FORMAT)
 LOGGER = logging.getLogger(__name__)
 
 
@@ -98,8 +98,8 @@ class Consumer(BaseConsumer):
     
     def setup_queue(self, queue_name):
         LOGGER.info('Declaring queue %s', queue_name)
-        self._channel.queue_declare(self.on_queue_declareok, queue_name)
-
+        self._channel.queue_declare(self.on_queue_declareok, queue=self.QUEUE)
+    
     
     def on_queue_declareok(self, method_frame):
         LOGGER.info('Binding %s to %s with %s',

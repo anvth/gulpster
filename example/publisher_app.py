@@ -1,11 +1,14 @@
-from gulpster.publisher import Publisher
+from gulpster.publisher.ioloop import Publisher
 
 class App(object):
 	def main(self):
 		publisher = Publisher()
 
-		publisher.connect()
-		publisher.start_publishing()
+		try:
+			publisher.run()
+		except KeyboardInterupt:
+			publisher.stop()
+		
 
 	def run(self):
 		self.main()

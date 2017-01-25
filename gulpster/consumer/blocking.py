@@ -42,7 +42,7 @@ class Consumer(BaseConsumer):
 
 		#set up subscription on the queue
 		self._channel.basic_consume(callback,
-  			queue=self.QUEUE,
+  			queue=self.QUEUEcd ,
   			no_ack=True)
 
 		# start consuming (blocks)

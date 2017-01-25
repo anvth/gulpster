@@ -6,5 +6,5 @@ rabbitmq:
   virtual_host: /fuxghddt
   queue: test
   exchange: message
-  exchange_type: topic
+  exchange_type: direct
   routing_key: example.test
