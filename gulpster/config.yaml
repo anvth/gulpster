@@ -1,9 +1,8 @@
 rabbitmq:
-  username: fuxghddt
-  password: yyCgDMbcfLI_7fv5lf9GHoPpl6w6_QtU
-  host: buck.rmq.cloudamqp.com
-  port: 5672
-  virtual_host: /fuxghddt
+  username: guest
+  password: guest
+  host: 0.0.0.0:8024
+  virtual_host: /
   queue: test
   exchange: message
   exchange_type: direct

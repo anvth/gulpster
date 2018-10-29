@@ -41,17 +41,16 @@ class BaseConsumer(object):
         self.QUEUE = self.config['queue']
         self.ROUTING_KEY = self.config['routing_key']
 
-
     def set_event_listener(self, listener):
         LOGGER.info('Setting event listener to %s', listener)
         self._event_listener = listener
-
 
     def notify_listener(self, evt, delivery_tag):
         if self._event_listener:
             try:
                 self._event_listener.handle_event(deserialize(evt))
                 LOGGER.info('%s handled', evt)
-            except exception as e:
+            except Exception as e:
                 LOGGER.error(e)
+
             self.acknowledge_message(delivery_tag)

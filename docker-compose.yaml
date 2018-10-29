@@ -1,0 +1,10 @@
+version: "2"
+services:
+  rabbitmq:
+    image: rabbitmq:3.6.1-management
+    ports:
+      - "8023:15672"
+      - "8024:5672"
+    environment:
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest

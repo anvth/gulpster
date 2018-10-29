@@ -1,16 +1,17 @@
 from gulpster.publisher.ioloop import Publisher
 
+
 class App(object):
-	def main(self):
-		publisher = Publisher()
+    def main(self):
+        publisher = Publisher()
+        try:
+            publisher.run()
+        except KeyboardInterrupt as e:
+            publisher.stop()
 
-		try:
-			publisher.run()
-		except KeyboardInterupt:
-			publisher.stop()
-		
+    def run(self):
+        self.main()
 
-	def run(self):
-		self.main()
 
-App().run()
+if __name__ == '__main__':
+    App().run()
