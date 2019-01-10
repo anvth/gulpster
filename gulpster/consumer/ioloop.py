@@ -1,7 +1,10 @@
-import sys
-import pika
 import logging
 from pika import adapters
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential
+)
 
 
 from .base import BaseConsumer
@@ -27,8 +30,12 @@ class Consumer(BaseConsumer):
 
     """
     def __init__(self, amqp_url=None):
-        super(Consumer, self).__init__()
-    
+        super(Consumer, self).__init__(amqp_url)
+
+    @retry(
+        stop=stop_after_attempt(5),
+        wait=wait_exponential(multiplier=0.2, max=60)
+    )
     def connect(self):
         LOGGER.info('Connecting to %s', self.url)
         return adapters.TornadoConnection(self.params, self.on_connection_open)
