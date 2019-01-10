@@ -1,8 +1,11 @@
-import os
 import sys
 import logging
-import pika
 from pika import adapters
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential
+)
 
 from .base import BaseConsumer
 
@@ -27,6 +30,10 @@ class Consumer(BaseConsumer):
 			except Exception as e:
 				print(e)
 
+	@retry(
+		stop=stop_after_attempt(5),
+		wait=wait_exponential(multiplier=0.2, max=60)
+	)
 	def connect(self):
 		LOGGER.info('Connecting to %s', self.url)
 		self._connection = adapters.BlockingConnection(self.params)

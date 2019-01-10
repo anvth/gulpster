@@ -1,6 +1,12 @@
 import sys
 import logging
 from pika import adapters
+from tenacity import (
+    retry,
+    retry_if_result,
+    stop_after_attempt,
+    wait_exponential
+)
 
 
 from .base import BasePublisher
@@ -66,6 +72,10 @@ class Publisher(BasePublisher):
 		self.add_on_connection_close_callback()
 		self.open_channel()
 
+	@retry(
+		stop=stop_after_attempt(5),
+		wait=wait_exponential(multiplier=0.2, max=60)
+	)
 	def connect(self):
 		LOGGER.info('Connecting to %s', self.url)
 		return adapters.TornadoConnection(self.params, self.on_connection_open)
@@ -104,6 +114,11 @@ class Publisher(BasePublisher):
 		LOGGER.info('Scheduling next message for %0.1f seconds', self.PUBLISH_INTERVAL)
 		self._connection.add_timeout(self.PUBLISH_INTERVAL, self.publish_message)
 
+	@retry(
+		retry=retry_if_result(lambda result: result is None),
+		stop=stop_after_attempt(5),
+		wait=wait_exponential(multiplier=0.2, max=1)
+	)
 	def publish_message(self):
 		if self._stopping:
 			return
