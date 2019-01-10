@@ -87,7 +87,7 @@ class Publisher(BasePublisher):
 	def start_publishing(self):
 		LOGGER.info('Issuing consumer related RPC commands')
 		self.enable_delivery_confirmations()
-		self.schedule_next_message()
+		# self.schedule_next_message()
 
 	def enable_delivery_confirmations(self):
 		LOGGER.info('Issuing Confirm.Select RPC command')
@@ -115,9 +115,8 @@ class Publisher(BasePublisher):
 		self._connection.add_timeout(self.PUBLISH_INTERVAL, self.publish_message)
 
 	@retry(
-		retry=retry_if_result(lambda result: result is None),
 		stop=stop_after_attempt(5),
-		wait=wait_exponential(multiplier=0.2, max=1)
+		wait=wait_exponential(multiplier=0.2, max=30)
 	)
 	def publish_message(self):
 		if self._stopping:
@@ -128,7 +127,7 @@ class Publisher(BasePublisher):
 		self._message_number += 1
 		self._deliveries.append(self._message_number)
 		LOGGER.info("Message sent")
-		self.schedule_next_message()
+		# self.schedule_next_message()
 
 	def run(self):
 		self._connection = self.connect()
