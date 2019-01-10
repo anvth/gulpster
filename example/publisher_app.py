@@ -1,13 +1,14 @@
-from gulpster.publisher.ioloop import Publisher
+from gulpster.event import Event
+from gulpster.publisher.blocking import Publisher
 
 
 class App(object):
     def main(self):
         publisher = Publisher()
-        try:
-            publisher.run()
-        except KeyboardInterrupt as e:
-            publisher.stop()
+        publisher.connect()
+
+        evt = Event("com.home.test", {})
+        publisher.start_publishing(evt)
 
     def run(self):
         self.main()
