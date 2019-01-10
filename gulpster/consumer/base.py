@@ -4,7 +4,7 @@ import logging
 
 
 from gulpster.utils import deserialize
-from gulpster.config import read_config_file
+from gulpster.settings import config
 
 
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
@@ -22,7 +22,7 @@ class BaseConsumer(object):
 
     """
     def __init__(self, amqp_url=None):
-        self.config = read_config_file()
+        self.config = config['rabbitmq']
         self._connection = None
         self._channel = None
         self._closing = False
